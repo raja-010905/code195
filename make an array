@@ -1,0 +1,47 @@
+def solve():
+    import sys
+    input = sys.stdin.read().split()
+    if not input:
+        return
+    
+    ptr = 0
+    t = int(input[ptr])
+    ptr += 1
+    
+    results = []
+    for _ in range(t):
+        n = int(input[ptr])
+        ptr += 1
+        a = []
+        for i in range(n):
+            a.append(int(input[ptr]))
+            ptr += 1
+        
+        # Special case for N = 1
+        if n == 1:
+            if a[0] == 0:
+                results.append(0)
+            else:
+                results.append(-1)
+            continue
+            
+        total_sum = sum(a)
+        
+        # K must be total_sum / (n - 1)
+        if total_sum % (n - 1) != 0:
+            results.append(-1)
+            continue
+        
+        k = total_sum // (n - 1)
+        
+        # Check if k is valid (k >= max(a))
+        if k < max(a):
+            results.append(-1)
+        else:
+            results.append(k)
+            
+    for res in results:
+        print(res)
+
+if __name__ == "__main__":
+    solve()
