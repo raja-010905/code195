@@ -1,0 +1,59 @@
+#include <stdio.h>
+#include <stdbool.h>
+#include <malloc.h>
+
+/**
+ * solve function calculates the number of operations K.
+ * We use long long to prevent overflow during summation.
+ */
+long long solve(int N, int* A) {
+    // Special case for N = 1
+    if (N == 1) {
+        return (A[0] == 0) ? 0 : -1;
+    }
+
+    long long sum = 0;
+    int max_val = 0;
+
+    for (int i = 0; i < N; i++) {
+        sum += A[i];
+        if (A[i] > max_val) {
+            max_val = A[i];
+        }
+    }
+
+    // Condition 1: Sum must be divisible by N - 1
+    if (sum % (N - 1) != 0) {
+        return -1;
+    }
+
+    long long K = sum / (N - 1);
+
+    // Condition 2: K must be at least the maximum element in A
+    // (This ensures no index is 'skipped' a negative number of times)
+    if (K < (long long)max_val) {
+        return -1;
+    }
+
+    return K;
+}
+
+int main() {
+    int T;
+    if (scanf("%d", &T) != 1) return 0;
+    while (T--) {
+        int N;
+        if (scanf("%d", &N) != 1) break;
+        int *A = (int *)malloc(sizeof(int) * N);
+        for (int i = 0; i < N; i++) {
+            scanf("%d", &A[i]);
+        }
+
+        // We use %lld for long long output
+        long long out_ = solve(N, A);
+        printf("%lld\n", out_);
+
+        free(A);
+    }
+    return 0;
+}
