@@ -1,0 +1,50 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+/**
+ * Logic:
+ * To maximize the number of palindromic subsequences of length > 1,
+ * we should use the minimum number of characters for each.
+ * The smallest palindrome is length 2, which requires a pair of identical characters (e.g., "aa").
+ * Every palindrome of length > 1 must have at least one pair of matching characters.
+ * Therefore, the answer is the sum of (frequency / 2) for all characters 'a'-'z'.
+ */
+
+void solve() {
+    // Using a large buffer for the string. 
+    // If the constraints specify a larger N, adjust this size.
+    char *s = (char *)malloc(100005 * sizeof(char));
+    if (scanf("%s", s) != 1) {
+        free(s);
+        return;
+    }
+
+    int freq[26] = {0};
+    for (int i = 0; s[i] != '\0'; i++) {
+        freq[s[i] - 'a']++;
+    }
+
+    int total_palindromes = 0;
+    for (int i = 0; i < 26; i++) {
+        // Divide by 2 to find how many disjoint pairs can be formed
+        total_palindromes += freq[i] / 2;
+    }
+
+    // Print ONLY the number, followed by a newline
+    printf("%d\n", total_palindromes);
+    
+    free(s);
+}
+
+int main() {
+    int T;
+    // Read T without printing any "Input number is..." text
+    if (scanf("%d", &T) != 1) return 0;
+    
+    while (T--) {
+        solve();
+    }
+    
+    return 0;
+}
