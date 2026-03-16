@@ -1,0 +1,23 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+/**
+ * Logic:
+ * 1. Total sums must be equal. If not, return -1.
+ * 2. Use two pointers to track segments of A and B.
+ * 3. Keep adding elements to the current segment sum of A (curSumA) or 
+ *    B (curSumB) until they are equal.
+ * 4. Every time curSumA == curSumB, we've found one element of the 
+ *    resulting array. Increment count and reset current sums.
+ */
+void solve() {
+    int n, m;
+    if (!(cin >> n >> m)) return;
+
+    vector<long long> a(n), b(m);
+    long long totalA = 0, totalB = 0;
+
+    for (int i = 0; i < n; i++) {
+        cin >> a[i];
