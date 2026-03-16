@@ -1,0 +1,55 @@
+#include <iostream>
+
+using namespace std;
+
+typedef long long ll;
+const int MOD = 1e9 + 7;
+
+/**
+ * Solves a single test case.
+ * Time Complexity: O(N)
+ * Space Complexity: O(1) (excluding input storage)
+ */
+void solve() {
+    int n;
+    if (!(cin >> n)) return;
+    
+    ll cur_xor = 0;
+    ll s0 = 1; // Sum of dp[j] where prefix XOR Pj has an even number of set bits
+    ll s1 = 0; // Sum of dp[j] where prefix XOR Pj has an odd number of set bits
+    ll dp_i = 0; // Current number of valid ways to partition the prefix
+
+    for (int i = 0; i < n; ++i) {
+        int val;
+        cin >> val;
+        cur_xor ^= val;
+        
+        // __builtin_popcountll returns the number of set bits in a 64-bit integer.
+        // We check if the count is odd (1) or even (0).
+        if (__builtin_popcountll(cur_xor) % 2 == 1) {
+            // Parity is odd: we need previous parity to be even to make XOR parity odd.
+            dp_i = s0;
+            s1 = (s1 + dp_i) % MOD;
+        } else {
+            // Parity is even: we need previous parity to be odd to make XOR parity odd.
+            dp_i = s1;
+            s0 = (s0 + dp_i) % MOD;
+        }
+    }
+
+    cout << dp_i << endl;
+}
+
+int main() {
+    // Optimize standard I/O
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    
+    int t;
+    if (cin >> t) {
+        while (t--) {
+            solve();
+        }
+    }
+    return 0;
+}
