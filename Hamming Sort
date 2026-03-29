@@ -1,0 +1,60 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+// Structure to hold the number and its distance from K
+struct Element {
+    int value;
+    int distance;
+
+    // Custom comparator for sorting
+    bool operator<(const Element& other) const {
+        if (distance != other.distance) {
+            return distance < other.distance;
+        }
+        return value < other.value; // Numerical order for ties
+    }
+};
+
+// Function to calculate Hamming Distance
+int get_hamming_distance(int n) {
+    // __builtin_popcount is a built-in GCC function to count set bits
+    return __builtin_popcount(n);
+}
+
+void solve() {
+    int N, K;
+    if (!(cin >> N >> K)) return;
+
+    vector<Element> arr(N);
+    for (int i = 0; i < N; i++) {
+        cin >> arr[i].value;
+        // Hamming Distance between x and K is popcount(x ^ K)
+        arr[i].distance = get_hamming_distance(arr[i].value ^ K);
+    }
+
+    // Sort using the custom comparator defined in the struct
+    sort(arr.begin(), arr.end());
+
+    // Print the sorted values
+    for (int i = 0; i < N; i++) {
+        cout << arr[i].value << (i == N - 1 ? "" : " ");
+    }
+    cout << endl;
+}
+
+int main() {
+    // Fast I/O
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int T;
+    if (cin >> T) {
+        while (T--) {
+            solve();
+        }
+    }
+    return 0;
+}
