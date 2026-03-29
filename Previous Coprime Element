@@ -1,0 +1,74 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+// Helper function to calculate GCD efficiently
+int gcd(int a, int b) {
+    while (b) {
+        a %= b;
+        swap(a, b);
+    }
+    return a;
+}
+
+// Structure to store a unique value and its most recent index
+struct ElementInfo {
+    int value;
+    int last_index;
+};
+
+void solve() {
+    int N;
+    if (!(cin >> N)) return;
+
+    vector<int> A(N);
+    vector<ElementInfo> unique_elements;
+    
+    for (int i = 0; i < N; i++) {
+        cin >> A[i];
+        
+        int max_co_prime_idx = -1;
+        int current_val_pos_in_list = -1;
+
+        // Iterate through unique values seen before this index
+        for (int j = 0; j < (int)unique_elements.size(); j++) {
+            // Check if the unique value is co-prime to current element
+            if (gcd(A[i], unique_elements[j].value) == 1) {
+                if (unique_elements[j].last_index > max_co_prime_idx) {
+                    max_co_prime_idx = unique_elements[j].last_index;
+                }
+            }
+            // Track if we've seen the current value before to update it later
+            if (unique_elements[j].value == A[i]) {
+                current_val_pos_in_list = j;
+            }
+        }
+
+        // Print the result for the current index
+        cout << max_co_prime_idx << (i == N - 1 ? "" : " ");
+
+        // Update the unique_elements list
+        if (current_val_pos_in_list != -1) {
+            unique_elements[current_val_pos_in_list].last_index = i;
+        } else {
+            unique_elements.push_back({A[i], i});
+        }
+    }
+    cout << "\n";
+}
+
+int main() {
+    // Fast I/O is highly recommended for this problem
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int T;
+    if (cin >> T) {
+        while (T--) {
+            solve();
+        }
+    }
+    return 0;
+}
