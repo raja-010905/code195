@@ -1,0 +1,47 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+void solve() {
+    int N;
+    if (!(cin >> N)) return;
+    vector<int> A(N + 1);
+    vector<int> pref0(N + 1, 0);
+    vector<int> pref1(N + 1, 0);
+
+    for (int i = 1; i <= N; i++) {
+        cin >> A[i];
+        pref0[i] = pref0[i - 1] + (A[i] == 0);
+        pref1[i] = pref1[i - 1] + (A[i] == 1);
+    }
+
+    int Q;
+    cin >> Q;
+    while (Q--) {
+        int L, R;
+        cin >> L >> R;
+        long long len = R - L + 1;
+        long long total_pairs = (len * (len - 1)) / 2;
+
+        long long c0 = pref0[R] - pref0[L - 1];
+        long long c1 = pref1[R] - pref1[L - 1];
+
+        // Invalid pairs: (0,0) and (0,1)
+        long long invalid_00 = (c0 * (c0 - 1)) / 2;
+        long long invalid_01 = c0 * c1;
+
+        cout << total_pairs - (invalid_00 + invalid_01) << "\n";
+    }
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    int T;
+    if (!(cin >> T)) return 0;
+    while (T--) {
+        solve();
+    }
+    return 0;
+}
