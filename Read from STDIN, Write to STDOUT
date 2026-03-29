@@ -1,0 +1,16 @@
+import sys
+
+# Use raw_input() instead of input() to avoid NameError in Python 2
+try:
+    # Read first line and convert to integer
+    line1 = raw_input()
+    n = int(line1)
+
+    # Read second line as string
+    s = raw_input()
+
+    # Output the result
+    print n * 2
+    print s
+except EOFError:
+    pass
