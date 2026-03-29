@@ -1,0 +1,44 @@
+import sys
+
+def solve():
+    # Read all input from standard input
+    input_data = sys.stdin.read().split()
+    
+    if not input_data:
+        return
+
+    # First element is N, the rest are the numbers in the array
+    n = int(input_data[0])
+    nums = input_data[1:]
+
+    # Dictionary to store frequency of each digit sum
+    digit_sum_counts = {}
+
+    for i in range(n):
+        # Calculate digit sum of the current number
+        # We treat the number as a string to easily iterate over digits
+        current_sum = 0
+        for char in nums[i]:
+            if char.isdigit(): # Handles potential negative signs if any
+                current_sum += int(char)
+        
+        # Update frequency in dictionary
+        if current_sum in digit_sum_counts:
+            digit_sum_counts[current_sum] += 1
+        else:
+            digit_sum_counts[current_sum] = 1
+
+    total_pairs = 0
+
+    # For each digit sum, calculate how many pairs can be formed
+    for count in digit_sum_counts.values():
+        if count > 1:
+            # Number of ways to choose 2 items from 'count' items
+            pairs = (count * (count - 1)) // 2
+            total_pairs += pairs
+
+    # Print the final result to standard output
+    print(total_pairs)
+
+if __name__ == "__main__":
+    solve()
